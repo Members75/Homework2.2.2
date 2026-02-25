@@ -4,6 +4,8 @@ public abstract class Product {
     private String name;
     public int cost;
 
+    abstract boolean isSpecial();
+
     public Product(String name) {
         this.name = name;
     }
@@ -11,8 +13,7 @@ public abstract class Product {
     public String getName() {
         return name;
     }
+    public abstract int getPrice();
 
-    public abstract int getPrice() {
-        return cost;
     }
-}
+
