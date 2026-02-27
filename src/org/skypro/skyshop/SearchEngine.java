@@ -8,7 +8,11 @@ public class SearchEngine {
         this.searchableItems = new Searchable[capacity];
     }
 
-    void add(Searchable item) {
+    public void add(Searchable item) {
+        if (item == null) {
+            System.out.println("Нельзя добавлять null - элемент в поисковую строку");
+            return;
+        }
         if (count < searchableItems.length) {
             searchableItems[count] = item;
             count++;
@@ -60,4 +64,5 @@ public class SearchEngine {
         }
         return bestMatch;
     }
+
 }

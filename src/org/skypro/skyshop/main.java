@@ -3,7 +3,7 @@ package org.skypro.skyshop;
 public class main {
     public static void main(String[] args) {
         try {
-            new SimpleProduct(null, 100);
+            new SimpleProduct(null, 0);
             new SimpleProduct("Товар", -1);
             new DiscountedProduct(" ", 100, 10);
             new DiscountedProduct("Товар со скидкой", 100, 20);
