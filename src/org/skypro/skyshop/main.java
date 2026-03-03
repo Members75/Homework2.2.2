@@ -1,37 +1,64 @@
 package org.skypro.skyshop;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class main {
     public static void main(String[] args) {
-        try {
-            new SimpleProduct(null, 0);
-            new SimpleProduct("Товар", -1);
-            new DiscountedProduct(" ", 100, 10);
-            new DiscountedProduct("Товар со скидкой", 100, 20);
-        } catch (IllegalArgumentException e) {
-            System.err.println("Ошибка при создании продукта: " + e.getMessage());
+
+        ProductBasket basket = new ProductBasket();
+
+        Product product1 = new SimpleProduct("Компьютер", 87400);
+        Product product2 = new SimpleProduct("Клавиатура", 3500);
+        Product product3 = new SimpleProduct("Игровое кресло", 12300);
+        Product product4 = new SimpleProduct("Мышь", 2700);
+
+        basket.addProduct(product1);
+        basket.addProduct(product2);
+        basket.addProduct(product3);
+        basket.addProduct(product4);
+
+        System.out.println("---- Изначально содержимое корзины ----");
+        basket.printBasket();
+
+        System.out.println("\n---- Удаляем продукт 'Клавиатура' ----");
+        List<Product> removedProducts = basket.removeProductsByName("Клавиатура");
+
+        System.out.println("Удаленные продукты: ");
+        for (Product product : removedProducts) {
+            System.out.println("- " + product.getName());
         }
-        Product validProduct = new SimpleProduct("Телевизор", 1000);
-        SimpleProduct validSimpleProduct = new SimpleProduct("Колонки", 500);
-        DiscountedProduct validDiscountProduct = new DiscountedProduct("Голосовой ассистент", 1000, 10);
-        System.out.println("Продукты созданы успешно");
+        System.out.println("\n---- Содержимое корзины после удаления ----");
+        basket.printBasket();
 
-        SearchEngine searchEngine = new SearchEngine(5);
-        searchEngine.add(validProduct);
-        searchEngine.add(validSimpleProduct);
-        searchEngine.add(validDiscountProduct);
+        System.out.println("\n---- Пытаемся удалить несуществующий продукт 'Системный блок' ----");
+        List<Product> emptyRemoved = basket.removeProductsByName("Системный блок");
 
-        try {
-            Searchable result = searchEngine.findBestMatch("Телевизор");
-            System.out.println("Наиболее подходящий объект: " + result.getStringRepresentation());
-        } catch (BestResultNotFound e) {
-            System.err.println("Ошибка" + e.getMessage());
+        if (emptyRemoved.isEmpty()) {
+            System.out.println("Список пуст");
+        } else {
+            System.out.println("Удалено продуктов: " + emptyRemoved.size());
         }
+        System.out.println("\n---- Последнее содержимое корзины ----");
+        basket.printBasket();
+
+        System.out.println("\n---- Поиск в SearchEngine ----");
+        SearchEngine searchEngine = new SearchEngine();
+
+        searchEngine.add(product1);
+        searchEngine.add(product2);
+        searchEngine.add(product3);
 
         try {
-            Searchable result = searchEngine.findBestMatch("несуществующий товар");
-            System.out.println("Наиболее подходящий объект: " + result.getStringRepresentation());
+            Searchable best = searchEngine.findBestMatch("Компьютер");
+            System.out.println("Лучший результат: " + best.getStringRepresentation());
         } catch (BestResultNotFound e) {
-            System.err.println("Ошибка: " + e.getMessage());
+            System.out.println("Ошибка поиска: " + e.getMessage());
+        }
+        List<Searchable> allResults = searchEngine.search("игровой стул");
+        System.out.println("Все результаты поиска по 'игровой стул': ");
+        for (Searchable result : allResults) {
+            System.out.println("- " + result.getStringRepresentation());
         }
     }
 }

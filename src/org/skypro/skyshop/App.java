@@ -1,5 +1,7 @@
 package org.skypro.skyshop;
 
+import java.util.List;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
  class App {
@@ -14,13 +16,13 @@ package org.skypro.skyshop;
         basket.addProduct(discounted);
         basket.addProduct(fixPrice);
 
-        basket.printBasketContents();
+        basket.printBasket();
 
         Article article1 = new Article("Обзор телевизора", "Телевизор с большой диагональю, поддежркой SmartTV и высоким разрешением.");
         Article article2 = new Article("Как выбрать смартфон", "Смартфон с высокой производительностью или профессиональной камерой.");
         Article article3 = new Article("Новинки одежды", "Показ последних вышедших брендов одежды.");
 
-        SearchEngine searchEngine = new SearchEngine(10);
+        SearchEngine searchEngine = new SearchEngine();
 
         searchEngine.add(simple);
         searchEngine.add(discounted);
@@ -30,15 +32,18 @@ package org.skypro.skyshop;
         searchEngine.add(article3);
 
         System.out.println("=== Поиск по запросу 'товар'===");
-        Searchable[] results1 = searchEngine.search("товар");
+        List<Searchable> temp1 = searchEngine.search("товар");
+        Searchable[] results1 = temp1.toArray(new Searchable[0]);
         printSearchResult(results1);
 
         System.out.println("=== Поиск по запросу 'телевизор'===");
-        Searchable[] results2 = searchEngine.search("телевизор");
+        List<Searchable> temp2 = searchEngine.search("телевизор");
+        Searchable[] results2 = temp2.toArray(new Searchable[0]);
         printSearchResult(results2);
 
         System.out.println("=== Поиск по запросу 'новинки'===");
-        Searchable[] results3 = searchEngine.search("телевизор");
+        List<Searchable> temp3 = searchEngine.search("новинки"); // исправлено: было "телевизор"
+        Searchable[] results3 = temp3.toArray(new Searchable[0]);
         printSearchResult(results3);
     }
 
