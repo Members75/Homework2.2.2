@@ -1,6 +1,7 @@
 package org.skypro.skyshop;
 
 import java.util.List;
+import java.util.Map;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -32,18 +33,18 @@ import java.util.List;
         searchEngine.add(article3);
 
         System.out.println("=== Поиск по запросу 'товар'===");
-        List<Searchable> temp1 = searchEngine.search("товар");
-        Searchable[] results1 = temp1.toArray(new Searchable[0]);
+        Map<String, Searchable> temp1 = searchEngine.search("товар");
+        Searchable[] results1 = temp1.values().toArray(new Searchable[0]);
         printSearchResult(results1);
 
         System.out.println("=== Поиск по запросу 'телевизор'===");
-        List<Searchable> temp2 = searchEngine.search("телевизор");
-        Searchable[] results2 = temp2.toArray(new Searchable[0]);
+        Map<String, Searchable> temp2 = searchEngine.search("телевизор");
+        Searchable[] results2 = temp2.values().toArray(new Searchable[0]);
         printSearchResult(results2);
 
         System.out.println("=== Поиск по запросу 'новинки'===");
-        List<Searchable> temp3 = searchEngine.search("новинки"); // исправлено: было "телевизор"
-        Searchable[] results3 = temp3.toArray(new Searchable[0]);
+        Map<String, Searchable> temp3 = searchEngine.search("новинки"); // исправлено: было "телевизор"
+        Searchable[] results3 = temp3.values().toArray(new Searchable[0]);
         printSearchResult(results3);
     }
 

@@ -1,33 +1,43 @@
 package org.skypro.skyshop;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLOutput;
+import java.util.*;
 
 public class ProductBasket {
-    private final List<Product> products = new ArrayList<>();
+    private final Map<String, List<Product>> productsMap = new HashMap<>();
 
     void addProduct(Product product) {
-        products.add(product);
+        if (product == null) return;
+
+        String name = product.getName();
+        if (!productsMap.containsKey(name)) {
+            productsMap.put(name, new ArrayList<>());
+        }
+        productsMap.get(name).add(product);
     }
 
     List<Product> removeProductsByName(String name) {
-        List<Product> removed = new ArrayList<>();
-        var iterator = products.iterator();
-
-        while (iterator.hasNext()) {
-            Product product = iterator.next();
-            if (product.getName().equals(name)) {
-                removed.add(product);
-                iterator.remove();
-            }
+        List<Product> removed = productsMap.remove(name);
+        if (removed == null) {
+            return new ArrayList<>();
         }
         return removed;
     }
 
     void printBasket() {
-        System.out.println("Содержимое корзины:");
-        for (Product product : products) {
-            System.out.println(" " + product.getName() + " - " + product.getPrice() + " рублей.");
+        System.out.println("Содержимое корзины");
+        for (List<Product> productList : productsMap.values()) {
+            for (Product product : productList) {
+                System.out.println("- " + product.getName() + "-" + product.getPrice() + " рублей.");
+            }
         }
+    }
+
+    Collection<Product> getAllProducts() {
+        List<Product> allProducts = new ArrayList<>();
+        for (List<Product> productList : productsMap.values()) {
+            allProducts.addAll(productList);
+        }
+        return allProducts;
     }
 }
