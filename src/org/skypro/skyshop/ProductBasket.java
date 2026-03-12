@@ -1,53 +1,43 @@
 package org.skypro.skyshop;
 
+import java.sql.SQLOutput;
+import java.util.*;
+
 public class ProductBasket {
-    private final Product[] products = new Product[5];
-    private int size = 0;
+    private final Map<String, List<Product>> productsMap = new HashMap<>();
 
-    public void addProduct(Product product) {
-        if (size >= products.length) {
-            System.out.println("Невозможно добавить продукт");
-            return;
+    void addProduct(Product product) {
+        if (product == null) return;
+
+        String name = product.getName();
+        if (!productsMap.containsKey(name)) {
+            productsMap.put(name, new ArrayList<>());
         }
-        products[size] = product;
-        size++;
+        productsMap.get(name).add(product);
     }
 
-    public int getTotalCost() {
-        int total = 0;
-        for (int i = 0; i < size; i++) {
-            total += products[i].getCost();
+    List<Product> removeProductsByName(String name) {
+        List<Product> removed = productsMap.remove(name);
+        if (removed == null) {
+            return new ArrayList<>();
         }
-        return total;
+        return removed;
     }
 
-    public void printBasketContents() {
-        if (size == 0) {
-            System.out.println("В корзине пусто");
-            return;
-        }
-        for (int i = 0; i < size; i++) {
-            Product product = products[i];
-            System.out.println(product.getName() + ": " + product.getCost());
-        }
-        System.out.println("Итого: " + getTotalCost());
-    }
-
-    public boolean containsProduct(String name) {
-        for (int i = 0; i < size; i++) {
-            if (products[i].getName().equals(name)) {
-                return true;
+    void printBasket() {
+        System.out.println("Содержимое корзины");
+        for (List<Product> productList : productsMap.values()) {
+            for (Product product : productList) {
+                System.out.println("- " + product.getName() + "-" + product.getPrice() + " рублей.");
             }
         }
-        return false;
     }
 
-    public void clearBasket() {
-        System.out.println("Очистка корзины. size до: " + size);
-        for (int i = 0; i < size; i++) {
-            products[i] = null;
+    Collection<Product> getAllProducts() {
+        List<Product> allProducts = new ArrayList<>();
+        for (List<Product> productList : productsMap.values()) {
+            allProducts.addAll(productList);
         }
-        size = 0;
-        System.out.println(" Очистка корзины. size после: " + size);
+        return allProducts;
     }
 }
