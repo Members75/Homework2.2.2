@@ -1,10 +1,8 @@
 package org.skypro.skyshop;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
  class App {
     public static void main(String[] args) {
         ProductBasket basket = new ProductBasket();
@@ -33,18 +31,18 @@ import java.util.Map;
         searchEngine.add(article3);
 
         System.out.println("=== Поиск по запросу 'товар'===");
-        Map<String, Searchable> temp1 = searchEngine.search("товар");
-        Searchable[] results1 = temp1.values().toArray(new Searchable[0]);
+        Set<Searchable> temp1 = searchEngine.search("товар");
+        Searchable[] results1 = temp1.toArray(new Searchable[0]);
         printSearchResult(results1);
 
         System.out.println("=== Поиск по запросу 'телевизор'===");
-        Map<String, Searchable> temp2 = searchEngine.search("телевизор");
-        Searchable[] results2 = temp2.values().toArray(new Searchable[0]);
+        Set<Searchable> temp2 = searchEngine.search("телевизор");
+        Searchable[] results2 = temp2.toArray(new Searchable[0]);
         printSearchResult(results2);
 
         System.out.println("=== Поиск по запросу 'новинки'===");
-        Map<String, Searchable> temp3 = searchEngine.search("новинки"); // исправлено: было "телевизор"
-        Searchable[] results3 = temp3.values().toArray(new Searchable[0]);
+        Set<Searchable> temp3 = searchEngine.search("новинки");
+        Searchable[] results3 = temp3.toArray(new Searchable[0]);
         printSearchResult(results3);
     }
 

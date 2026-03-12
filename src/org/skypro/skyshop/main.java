@@ -3,6 +3,7 @@ package org.skypro.skyshop;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
 public class main {
     public static void main(String[] args) {
@@ -56,10 +57,10 @@ public class main {
         } catch (BestResultNotFound e) {
             System.out.println("Ошибка поиска: " + e.getMessage());
         }
-        Map<String, Searchable> allResults = searchEngine.search("игровое кресло");
+        Set<Searchable> allResults = searchEngine.search("игровое кресло");
         System.out.println("Все результаты поиска по 'игровое кресло' (отсортировано по имени): ");
-        for (Map.Entry<String, Searchable> entry : allResults.entrySet()) {
-            System.out.println("- " + entry.getKey() + ":" + entry.getValue().getStringRepresentation());
+        for (Searchable item : allResults) {
+            System.out.println("- " + item.getSearchTerm() + ": " + item.getStringRepresentation());
         }
     }
 }
