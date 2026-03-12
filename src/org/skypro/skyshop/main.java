@@ -61,7 +61,7 @@ public class main {
         System.out.println("Все результаты поиска по 'игровое кресло' (отсортировано по имени): ");
         for (Searchable item : allResults) {
             System.out.println("- " + item.getSearchTerm() + ": " + item.getStringRepresentation());
-        }
+         }
     }
 }
 
