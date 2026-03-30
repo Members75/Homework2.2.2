@@ -1,19 +1,47 @@
 package org.skypro.skyshop;
 
-public class Product {
-    public String name;
-    public int cost;
+import java.util.Objects;
 
-    public Product(String name, int cost) {
+abstract class Product implements Searchable {
+    protected String name;
+    protected int cost;
+
+    abstract boolean isSpecial();
+
+     Product(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Название продукта не может быть null или пустой строкой, а также пустыми пробелами");
+        }
         this.name = name;
-        this.cost = cost;
     }
 
-    public String getName() {
+    @Override
+     public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Product product = (Product) obj;
+        return Objects.equals(name, product.name);
+    }
+
+    @Override
+     public int hashCode() {
+        return name != null ? name.hashCode() : 0;
+    }
+
+    @Override
+     public String getName() {
         return name;
     }
 
-    public int getCost() {
-        return cost;
+    abstract  int getPrice();
+
+    @Override
+     public String getSearchTerm() {
+        return getName();
+    }
+
+    @Override
+     public String getContentType() {
+        return "PRODUCT";
     }
 }

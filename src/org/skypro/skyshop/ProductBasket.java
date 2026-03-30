@@ -1,53 +1,52 @@
 package org.skypro.skyshop;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
+
+
 public class ProductBasket {
-    private final Product[] products = new Product[5];
-    private int size = 0;
+    private final Map<String, List<Product>> productsMap = new HashMap<>();
 
-    public void addProduct(Product product) {
-        if (size >= products.length) {
-            System.out.println("Невозможно добавить продукт");
-            return;
+    void addProduct(Product product) {
+        if (product == null) return;
+
+        String name = product.getName();
+        if (!productsMap.containsKey(name)) {
+            productsMap.put(name, new ArrayList<>());
         }
-        products[size] = product;
-        size++;
+        productsMap.get(name).add(product);
     }
 
-    public int getTotalCost() {
-        int total = 0;
-        for (int i = 0; i < size; i++) {
-            total += products[i].getCost();
+    List<Product> removeProductsByName(String name) {
+        List<Product> removed = productsMap.remove(name);
+        if (removed == null) {
+            return new ArrayList<>();
         }
-        return total;
+        return removed;
     }
 
-    public void printBasketContents() {
-        if (size == 0) {
-            System.out.println("В корзине пусто");
-            return;
-        }
-        for (int i = 0; i < size; i++) {
-            Product product = products[i];
-            System.out.println(product.getName() + ": " + product.getCost());
-        }
-        System.out.println("Итого: " + getTotalCost());
+    void printBasket() {
+        System.out.println("Содержимое корзины");
+        productsMap.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .forEach(product -> System.out.println("- " + product.getName() + " - " + product.getPrice() + " рублей."));
     }
 
-    public boolean containsProduct(String name) {
-        for (int i = 0; i < size; i++) {
-            if (products[i].getName().equals(name)) {
-                return true;
-            }
-        }
-        return false;
+    Collection<Product> getAllProducts() {
+        return productsMap.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
-    public void clearBasket() {
-        System.out.println("Очистка корзины. size до: " + size);
-        for (int i = 0; i < size; i++) {
-            products[i] = null;
-        }
-        size = 0;
-        System.out.println(" Очистка корзины. size после: " + size);
+    double calculateTotalPrice() {
+        return productsMap.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .mapToDouble(Product::getPrice)
+                .sum();
     }
 }
+
