@@ -40,5 +40,13 @@ public class ProductBasket {
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
     }
+
+    double calculateTotalPrice() {
+        return productsMap.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .mapToDouble(Product::getPrice)
+                .sum();
+    }
 }
 
