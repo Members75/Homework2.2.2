@@ -1,7 +1,9 @@
 package org.skypro.skyshop;
 
-import java.sql.SQLOutput;
 import java.util.*;
+import java.util.stream.Collectors;
+
+
 
 public class ProductBasket {
     private final Map<String, List<Product>> productsMap = new HashMap<>();
@@ -26,18 +28,17 @@ public class ProductBasket {
 
     void printBasket() {
         System.out.println("Содержимое корзины");
-        for (List<Product> productList : productsMap.values()) {
-            for (Product product : productList) {
-                System.out.println("- " + product.getName() + "-" + product.getPrice() + " рублей.");
-            }
-        }
+        productsMap.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .forEach(product -> System.out.println("- " + product.getName() + " - " + product.getPrice() + " рублей."));
     }
 
     Collection<Product> getAllProducts() {
-        List<Product> allProducts = new ArrayList<>();
-        for (List<Product> productList : productsMap.values()) {
-            allProducts.addAll(productList);
-        }
-        return allProducts;
+        return productsMap.values()
+                .stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 }
+

@@ -1,8 +1,9 @@
 package org.skypro.skyshop;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
- class SearchEngine {
+class SearchEngine {
     private final Set<Searchable> items = new HashSet<>();
 
      void add(Searchable item) {
@@ -18,18 +19,12 @@ import java.util.*;
             throw new IllegalArgumentException("Поисковой запрос не может быть null");
         }
 
-        Set<Searchable> results = new TreeSet<>(createComparator());
         String queryLower = query.toLowerCase();
 
-        for (Searchable item : items) {
-            if (item == null) continue;
-
-            String searchTerm = item.getSearchTerm().toLowerCase();
-            if (searchTerm.contains(queryLower)) {
-                results.add(item);
-            }
-        }
-        return results;
+         return items.stream()
+                 .filter(item -> item != null)
+                 .filter(item -> item.getSearchTerm().toLowerCase().contains(queryLower))
+                 .collect(Collectors.toCollection(() -> new TreeSet<>(createComparator())));
     }
 
      Searchable findBestMatch(String search) throws BestResultNotFound {
